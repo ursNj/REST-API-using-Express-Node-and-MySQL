@@ -1,26 +1,83 @@
-const users = [{
-    id: 1,
-    name: "Richard Hendricks",
-    email: "richard@piedpiper.com",
-},
-{
-    id: 2,
-    name: "Bertram Gilfoyle",
-    email: "gilfoyle@piedpiper.com",
-},
-];
+var Users = require('../models/users');
 
 const router = app => {
 
     app.get('/', (request, response) => {
         response.send({
-            message: 'Node.js and Express REST API'
+            message: 'Welcome to Mytube.'
         });
     });
 
     app.get('/users', (request, response) => {
-        response.send(users);
+
+        Users.getAllUsers(function(err,rows){
+ 
+            if(err) {
+                response.send(err);
+            } else {
+                response.send(rows);
+            }
+             
+        });
+
     });
+
+    app.get('/users/:id?', (request, response, next) => {
+        
+        Users.getUserById(request.params.id, function(err,rows){
+ 
+            if(err) {
+                response.send(err);
+            } else {
+                response.send(rows);
+            }
+             
+        });
+
+    });
+
+    app.post('/users', (request, response, next) => {
+
+        Users.addUser(request.body, function(err,rows){
+ 
+            if(err) {
+                response.send(err);
+            } else {
+                response.send(rows);
+            }
+             
+        });
+
+    });
+
+    app.delete('/users/:id?', (request, response, next) => {
+        
+        Users.deleteUser(request.params.id, function(err,rows){
+ 
+            if(err) {
+                response.send(err);
+            } else {
+                response.send(rows);
+            }
+             
+        });
+
+    });
+
+    app.put('/users/:id?', (request, response, next) => {
+
+        Users.updateUser(request.params.id, request.body, function(err,rows){
+ 
+            if(err) {
+                response.send(err);
+            } else {
+                response.send(rows);
+            }
+             
+        });
+
+    });
+
     
 }
 
